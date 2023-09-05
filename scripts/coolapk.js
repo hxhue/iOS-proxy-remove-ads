@@ -10,9 +10,9 @@ function modifyInitResponse(obj) {
       // 热搜词条广告，比如 "巅峰极速" 和 "冒险岛"
       return undefined;
     } else if (item.cardId == 6390 || item.description?.includes('AdSlot')) {
-      // 待验证：广告快速过期但长时间不 retry?
+      // 单位是秒
       item.extraDataArr["Ad.SPLASH_RETRY_PERIOD"] = "2147483647";
-      item.extraDataArr["SplashAd.Expires"] = 1;
+      item.extraDataArr["SplashAd.Expires"] = 2147483647; // 不知道是浮点数还是整数，0.001 必有广告
       item.extraDataArr["SplashAd.onResume"] = "0";
       item.extraData = JSON.stringify(item.extraDataArr);
     }
