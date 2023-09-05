@@ -4,16 +4,6 @@ let obj = JSON.parse($response.body);
 
 function modifyInitResponse(obj) {
   // Update: 2023-09-05
-  // extraDataArr is object
-  const filterKeys = (extraDataArr) => {
-    const prefixes = ["Douyin.", "Ad.", "SplashAd.", "MainActivity.redPacket"];
-    for (const key of Object.keys(extraDataArr)) {
-      if (prefixes.some((prefix) => key.startsWith(prefix))) {
-        extraDataArr[key] = undefined;
-      }
-    }
-  };
-  // obj.data is Array
   obj.data = obj.data.map((item) => {
     // Use == in case property is string
     if (item.entityId == 944 || item.entityId == 945) {
@@ -22,10 +12,11 @@ function modifyInitResponse(obj) {
     } else if (item.cardId == 6390 || item.description?.includes('AdSlot')) {
       // 待验证：广告快速过期但长时间不 retry?
       item.extraDataArr["Ad.SPLASH_RETRY_PERIOD"] = "2147483647";
-      item.extraDataArr["SplashAd.Expires"] = "1";
+      item.extraDataArr["SplashAd.Expires"] = 1;
       item.extraDataArr["SplashAd.onResume"] = "0";
       item.extraData = JSON.stringify(item.extraDataArr);
     }
+    return item;
   }).filter((item) => item)
 }
 
